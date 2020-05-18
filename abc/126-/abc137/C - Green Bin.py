@@ -10,7 +10,7 @@ for _ in range(n):
     kw[''.join(a)] += 1
 
 sum = 0
-for _, val in kw.most_common():
-    sum += val * (val - 1) // 2
+for _, ans in kw.most_common():
+    sum += ans * (ans - 1) // 2
 
 print(sum)
