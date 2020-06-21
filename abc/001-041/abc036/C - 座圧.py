@@ -1,10 +1,9 @@
 n = int(input())
 a = [int(input()) for _ in range(n)]
 
-limit = len(list(set(a)))
-
 hash = {}
-for i, l in enumerate(a):
+for i, l in enumerate(sorted(set(a))):
     hash[l] = i
 
-print(hash)
+for i in a:
+    print(hash[i])
