@@ -13,7 +13,7 @@ for i in range(m):
     cum_b.append(cum_b[i] + b[i])
 
 ans = 0
-val = m
+# val = m
 for i in range(n + 1):
     if cum_a[i] > k:
         break
