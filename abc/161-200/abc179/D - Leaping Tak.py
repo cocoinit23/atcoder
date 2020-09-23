@@ -14,9 +14,8 @@ for i in range(2, n + 1):
 
         ll = max(1, i - r)
         rr = i - l
-        if ll <= rr:
-            dp[i] += cumsum[rr] - cumsum[ll - 1]
-            dp[i] %= mod
+        dp[i] += cumsum[rr] - cumsum[ll - 1]
+        dp[i] %= mod
     cumsum[i] = cumsum[i - 1] + dp[i]
     cumsum[i] %= mod
 
