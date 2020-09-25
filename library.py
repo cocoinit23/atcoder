@@ -10,6 +10,20 @@ def make_divisors(n):
     return lower_divisors + upper_divisors[::-1]
 
 
+def warshall_floyd(dist):
+    n = len(dist)
+
+    for i in range(n):
+        dist[i][i] = 0
+
+    for i in range(n):
+        for j in range(n):
+            for k in range(n):
+                dist[j][k] = min(dist[j][k], dist[j][i] + dist[i][k])
+
+    return dist
+
+
 class UnionFind:
     def __init__(self, n):
         self.parent = [-1] * (n + 1)
