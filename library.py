@@ -10,18 +10,48 @@ def make_divisors(n):
     return lower_divisors + upper_divisors[::-1]
 
 
-def warshall_floyd(dist):
-    n = len(dist)
+def warshall_floyd(graph):
+    # graph: compressed sparse graph, N x N array of distances
+    # Pypy is faster due to nested loop
+    n = len(graph)
 
     for i in range(n):
-        dist[i][i] = 0
+        graph[i][i] = 0
 
-    for i in range(n):
-        for j in range(n):
-            for k in range(n):
-                dist[j][k] = min(dist[j][k], dist[j][i] + dist[i][k])
+    for i in range(n):  # via point
+        for j in range(n):  # start
+            for k in range(n):  # goal
+                graph[j][k] = min(graph[j][k], graph[j][i] + graph[i][k])
 
-    return dist
+    return graph
+
+
+def dijkstra(graph):
+    # graph: compressed sparse graph, N x N array of distances
+    import heapq
+
+    n = len(graph)
+    result = []
+
+    for start in range(n):
+        dist = [1e20] * n
+        dist[start] = 0
+        q = []
+        heapq.heapify(q)
+        heapq.heappush(q, start)
+
+        while q:
+            cur = heapq.heappop(q)
+            for goal in range(n):
+                if start == goal:
+                    continue
+                if graph[cur][goal] != 0 and dist[goal] > dist[cur] + graph[cur][goal]:
+                    dist[goal] = dist[cur] + graph[cur][goal]
+                    heapq.heappush(q, goal)
+
+        result.append(dist)
+
+    return result
 
 
 class UnionFind:
