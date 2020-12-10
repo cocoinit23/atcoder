@@ -1,3 +1,16 @@
+from typing import List
+from functools import reduce
+import math
+
+
+def gcd(int_list: List[int]) -> int:
+    return reduce(math.gcd, int_list)
+
+
+def lcm(int_list: List[int]) -> int:
+    return reduce(lambda x, y: (x * y) // math.gcd(x, y), int_list)
+
+
 def make_divisors(n):
     lower_divisors, upper_divisors = [], []
     i = 1
