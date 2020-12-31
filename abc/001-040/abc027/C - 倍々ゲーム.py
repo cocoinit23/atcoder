@@ -1,16 +1,20 @@
+import math
+
 n = int(input())
+
+depth = int(math.log2(n)) + 1
+
 x = 1
+turn = 0
+depth %= 2
 
-takahashi_turn = True
-
-while True:
-    if takahashi_turn:
-        x *= 2
-    else:
+while x <= n:
+    if turn + depth == 1:
         x = 2 * x + 1
+    else:
+        x = 2 * x
 
-    takahashi_turn = not takahashi_turn
-    if x > n:
-        print('Takahashi') if takahashi_turn else print('Aoki')
-        break
+    turn = (turn + 1) % 2
+    ans = ['Takahashi', 'Aoki'][turn]
 
+print(ans)
