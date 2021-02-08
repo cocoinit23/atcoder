@@ -11,6 +11,19 @@ def lcm(int_list: List[int]) -> int:
     return reduce(lambda x, y: (x * y) // math.gcd(x, y), int_list)
 
 
+def sieve_of_eratosthenes(n):
+    if n <= 1:
+        return []
+    prime = [2]
+    limit = int(n ** 0.5)
+    data = [i for i in range(3, n + 1, 2)]
+    while limit > data[0]:
+        prime.append(data[0])
+        data = [i for i in data if i % data[0] != 0]
+
+    return prime + data
+
+
 def make_divisors(n):
     lower_divisors, upper_divisors = [], []
     i = 1

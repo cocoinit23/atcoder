@@ -1,17 +1,14 @@
-import itertools
+import bisect
 
 n = int(input())
-l = map(int, input().split())
+l = list(map(int, input().split()))
+l.sort()
 
-comb = list(itertools.combinations(l, 3))
-
-result = 0
-
-for i in range(len(comb)):
-    a, b, c = comb[i]
-    if a < b + c:
-        if b < c + a:
-            if c < a + b:
-                result += 1
-
-print(result)
+ans = 0
+for i in range(n):
+    for j in range(i + 1, n):
+        a = l[i]
+        b = l[j]
+        c = bisect.bisect_left(l, a + b) - 1
+        ans += c - j
+print(ans)
