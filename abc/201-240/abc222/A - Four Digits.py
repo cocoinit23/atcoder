@@ -1,4 +1,3 @@
 n = int(input())
-
-ans = n - 1
+ans = f'{n:04d}'
 print(ans)

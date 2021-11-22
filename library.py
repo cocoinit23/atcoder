@@ -112,3 +112,16 @@ class UnionFind:
 
     def count(self, x):
         return -self.parent[self.find(x)]
+
+
+def base_10_to_n(x: int, n: int) -> str:
+    if int(x / n):
+        return base_10_to_n(int(x / n), n) + str(x % n)
+    return str(x % n)
+
+
+def base_n_to_10(x: str, n: int) -> int:
+    out = 0
+    for i in range(1, len(str(x)) + 1):
+        out += int(x[-i]) * (n ** (i - 1))
+    return out

@@ -9,19 +9,26 @@ x = input()
 m = int(input())
 
 base = max(map(int, list(x))) + 1
-l = base
-r = 10 ** 10
 
-while r - l > 1:
-    mid = (l + r) // 2
-    val = base_n_to_10(x, mid)
-    if val > m:
-        r = mid
+if int(x) < 10:
+    if base_n_to_10(x, base) > m:
+        print(0)
     else:
-        l = mid
+        print(1)
+else:
+    l = base
+    r = 10 ** 10
 
-ans = set()
-for i in range(base, r):
-    ans.add(base_n_to_10(x, i))
-ans = len(ans)
-print(ans)
+    while r - l > 1:
+        mid = (l + r) // 2
+        val = base_n_to_10(x, mid)
+        if val > m:
+            r = mid
+        else:
+            l = mid
+
+    ans = set()
+    for i in range(base, r):
+        ans.add(base_n_to_10(x, i))
+    ans = len(ans)
+    print(ans)
