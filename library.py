@@ -3,11 +3,11 @@ from functools import reduce
 import math
 
 
-def gcd(int_list: List[int]) -> int:
+def GreatestCommonDivisor(int_list: List[int]) -> int:
     return reduce(math.gcd, int_list)
 
 
-def lcm(int_list: List[int]) -> int:
+def LeastCommonMultiple(int_list: List[int]) -> int:
     return reduce(lambda x, y: (x * y) // math.gcd(x, y), int_list)
 
 
