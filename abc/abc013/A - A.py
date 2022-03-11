@@ -1,0 +1,3 @@
+x = input()
+ans = ord(x) - ord('A') + 1
+print(ans)
