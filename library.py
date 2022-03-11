@@ -1,19 +1,35 @@
-from typing import List
+from typing import List, Tuple
 from functools import reduce
 import math
 
+import bisect
 
-def GreatestCommonDivisor(int_list: List[int]) -> int:
+def gcd(int_list):
+    """
+    :param int_list: List[int]
+    :return: int, greatest common divisor
+    """
     return reduce(math.gcd, int_list)
 
 
-def LeastCommonMultiple(int_list: List[int]) -> int:
+def lcm(int_list):
+    """
+    lcm = x * y / gcd(x,y)
+    :param int_list: List[int]
+    :return: int, least common multiple
+    """
     return reduce(lambda x, y: (x * y) // math.gcd(x, y), int_list)
 
 
 def sieve_of_eratosthenes(n):
+    """
+    :param n: counting limit
+    :return: List[int], prime numbers
+    """
     if n <= 1:
-        return []
+        raise ValueError
+        # return []
+
     prime = [2]
     limit = int(n ** 0.5)
     data = [i for i in range(3, n + 1, 2)]
@@ -25,6 +41,10 @@ def sieve_of_eratosthenes(n):
 
 
 def make_divisors(n):
+    """
+    :param n: int
+    :return: List[int], divisors
+    """
     lower_divisors, upper_divisors = [], []
     i = 1
     while i * i <= n:
@@ -38,7 +58,6 @@ def make_divisors(n):
 
 def warshall_floyd(graph):
     # graph: compressed sparse graph, N x N array of distances
-    # Pypy is faster due to nested loop
     n = len(graph)
 
     for i in range(n):
@@ -107,7 +126,7 @@ class UnionFind:
             if self.rank[x] == self.rank[y]:
                 self.rank[y] += 1
 
-    def same(self, x, y):
+    def is_same(self, x, y):
         return self.find(x) == self.find(y)
 
     def count(self, x):
@@ -125,3 +144,52 @@ def base_n_to_10(x: str, n: int) -> int:
     for i in range(1, len(str(x)) + 1):
         out += int(x[-i]) * (n ** (i - 1))
     return out
+
+
+def EulerTour(n, graph, root):
+    """
+    (n: int, graph: List[List[int]], root: int) -> Tuple[List[int], List[int], List[int]]:
+
+    :param n: the number of vertex points
+    :param graph: 2D matrix of N vertices given by the edges
+    :param root: start node index
+
+    :return tour: order of visited vertex
+    :return in_time: first visiting time of each vertex
+    :return out_time: last visiting time of each vertex
+
+    example:
+    graph = [[] for _ in range(n)]
+    for _ in range(n-1):
+        a, b = map(int, input().split())
+        graph[a-1].append(b-1)
+        graph[b-1].append(a-1)
+
+    tour, in_time, out_time = EulerTour(n, graph, 0)
+    """
+
+    parent = [-1] * n
+    stack = [~root, root]  # postorder, preorder
+    curr_time = -1
+    tour = []
+    in_time = [-1] * n
+    out_time = [-1] * n
+    while stack:
+        curr_node = stack.pop()
+        curr_time += 1
+        if curr_node >= 0:  # preorder
+            tour.append(curr_node)
+            if in_time[curr_node] == -1:
+                in_time[curr_node] = curr_time
+
+            for next_node in graph[curr_node]:
+                if next_node != parent[curr_node]:
+                    parent[next_node] = curr_node
+                    stack.append(~next_node)
+                    stack.append(next_node)
+        elif curr_node < 0:  # postorder
+            out_time[~curr_node] = curr_time
+            if parent[~curr_node] != -1:
+                tour.append(parent[~curr_node])
+
+    return tour, in_time, out_time
