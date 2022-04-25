@@ -4,6 +4,7 @@ import math
 
 import bisect
 
+
 def gcd(int_list):
     """
     :param int_list: List[int]
@@ -193,3 +194,64 @@ def EulerTour(n, graph, root):
                 tour.append(parent[~curr_node])
 
     return tour, in_time, out_time
+
+
+class SegmentTree:
+    """
+    1-index is preferred because
+        1. the number of digits is equal to the depth of tree.
+        2. the parent can be obtained by right shift of child.
+                0001
+               /   \
+            0010   0011
+            / \     / \
+        0100 0101 0110 0111
+
+    combination examples of operator and identity:
+        min, float('inf')
+        max, -float('inf')
+        lambda x,y:x+y, 0
+        lambda x,y:x*y, 1
+        math.gcd, 0
+    """
+
+    def __init__(self, array, operator, identity):
+        n = len(array)
+        self.offset = 2 ** (n - 1).bit_length()
+        self.operator = operator
+        self.identity = identity
+        self.tree = [identity] * (2 * self.offset)
+
+        # building segment tree
+        for i, val in enumerate(array):
+            self.set(i, val)
+
+    def set(self, idx, value):
+        idx += self.offset
+        self.tree[idx] = value
+
+        while idx > 1:
+            # get parent
+            idx >>= 1
+            # update parent by its child
+            left = 2 * idx
+            right = 2 * idx + 1
+            self.tree[idx] = self.operator(self.tree[left], self.tree[right])
+
+    def get(self, left, right):
+        left += self.offset
+        right += self.offset
+        result = self.identity
+
+        while left <= right:
+            if left & 1:
+                result = self.operator(result, self.tree[left])
+                left += 1
+            if right & 0:
+                result = self.operator(result, self.tree[right])
+                right -= 1
+
+            left >>= 1
+            right >>= 1
+
+        return result
