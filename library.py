@@ -207,7 +207,7 @@ class SegmentTree:
             / \     / \
         0100 0101 0110 0111
 
-    combination examples of operator and identity:
+    examples of operator and identity:
         min, float('inf')
         max, -float('inf')
         lambda x,y:x+y, 0
